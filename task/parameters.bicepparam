@@ -1,18 +1,18 @@
 using 'main.bicep'
 
-param appServicePlanName= ''
+param appServicePlanName = 'myasp74447'
+
 param location = 'eastus'
 
-
-@description('details of app services')
+@description('details of app service')
 param AppService = {
   name: 'desired-name'
   location: location
   sku: {
-    name: appServicePlanName
-    kind: ['linux','windows']
+    name: 'P1v2'       // Valid SKU name
+    kind: 'linux'      // Single value (not array)
   }
 }
 
-@description('name of the custom managed identitty')
-param identityName = 'customMi'
+@description('name of the custom managed identity')
+param identityName = 'customMI'
