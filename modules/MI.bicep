@@ -5,3 +5,4 @@ resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@
   name: identityName
   location: location
 }
+output identityId string = userAssignedIdentity.id
