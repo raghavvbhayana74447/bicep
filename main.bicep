@@ -1,6 +1,6 @@
 @description('location')
 param location string 
-
+param resourceGroup string 
 param appServicePlanName string 
 param AppService object  
 param identityName string

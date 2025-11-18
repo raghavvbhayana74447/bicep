@@ -8,7 +8,7 @@ param resourceGroup= 'RnD-RaghavRG'
 
 @description('details of app service')
 param AppService = {
-  name: 'myapp${uniqueString(resourceGroup().id)}'
+  name: 'myapp74447'
   location: location
   sku: {
     name: 'P1v2'       
@@ -18,3 +18,5 @@ param AppService = {
 
 @description('name of the custom managed identity')
 param identityName = 'customMI'
+
+
