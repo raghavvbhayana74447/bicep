@@ -4,7 +4,7 @@ param appServicePlanName = 'myasp74447'
 
 param location = 'eastus'
 
-param resourceGroup= 'RnD-RaghavRG'
+
 
 @description('details of app service')
 param AppService = {
