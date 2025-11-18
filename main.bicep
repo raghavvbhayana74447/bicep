@@ -1,48 +1,41 @@
-@description('location')
-param location string 
-param appServicePlanName string 
-param AppService object  
-param identityName string
+param location string
+param identityName string 
+param sku object 
+param kind string 
+param appServiceName string 
+var aspName = 'AspName${uniqueString(resourceGroup().id)}'
 
-module managedIdentity 'modules/MI.bicep' = {
-  name: 'customMI'
+module managedIdentity 'modules/Managed_Identity.bicep' = {
   params: {
-    identityName: identityName
     location: location
+    identityName: identityName
   }
 }
 
-var managedIdentityResourceId = resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', identityName)
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: appServicePlanName
-  location: location
-  sku: {
-    name: 'P1v2' 
-  }
-  kind: 'linux'
-  properties: {
-    reserved: true
-  }
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
+module appServicePlan 'modules/ASP.bicep' = { 
+  params: {
+    AspName: 'AspName'
+    kind: kind
+    location: location
+    sku: {
+      name: sku.name
+      tier: sku.tier
     }
   }
 }
 
-resource appService 'Microsoft.Web/sites@2024-04-01' = {
-  name: AppService.name
-  location: location
-  properties: {
-    serverFarmId: appServicePlan.id
-    httpsOnly: true
+module appService 'modules/appService.bicep' = {
+  params:{
+    appServiceName: appServiceName
+    location: location
+    appServicePlanName: aspName
   }
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
+      '${resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', identityName)}': {}
     }
-  }
 }
+}
+
+
