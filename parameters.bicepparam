@@ -4,13 +4,15 @@ param appServicePlanName = 'myasp74447'
 
 param location = 'eastus'
 
+param resourceGroup= 'RnD-RaghavRG'
+
 @description('details of app service')
 param AppService = {
-  name: 'desired-name'
+  name: 'myapp${uniqueString(resourceGroup().id)}'
   location: location
   sku: {
-    name: 'P1v2'       // Valid SKU name
-    kind: 'linux'      // Single value (not array)
+    name: 'P1v2'       
+    kind: 'linux'     
   }
 }
 

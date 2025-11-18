@@ -2,10 +2,10 @@
 param location string 
 
 param appServicePlanName string 
-param AppService object  // Optional, used if you want to define the App Service properties dynamically
+param AppService object  
 param identityName string
 
-module managedIdentity '../modules/MI.bicep' = {
+module managedIdentity 'modules/MI.bicep' = {
   name: 'customMI'
   params: {
     identityName: identityName
@@ -13,7 +13,6 @@ module managedIdentity '../modules/MI.bicep' = {
   }
 }
 
-// Construct resource ID statically using known identityName param
 var managedIdentityResourceId = resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', identityName)
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
@@ -35,7 +34,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 }
 
 resource appService 'Microsoft.Web/sites@2024-04-01' = {
-  name: 'myAppService'
+  name: AppService.name
   location: location
   properties: {
     serverFarmId: appServicePlan.id
